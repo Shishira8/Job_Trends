@@ -8,25 +8,31 @@ load_dotenv()
 
 st.set_page_config(page_title="IT Skill Demand by Seniority", layout="wide")
 
+def get_cfg(key: str):
+    # Streamlit Cloud secrets (deployment)
+    if key in st.secrets:
+        return st.secrets[key]
+    # Local env (local dev)
+    return os.getenv(key)
+
 def get_conn():
     required = [
         "SNOWFLAKE_ACCOUNT","SNOWFLAKE_USER","SNOWFLAKE_PASSWORD",
         "SNOWFLAKE_ROLE","SNOWFLAKE_WAREHOUSE","SNOWFLAKE_DATABASE","SNOWFLAKE_SCHEMA"
     ]
-    missing = [k for k in required if not os.getenv(k)]
+    missing = [k for k in required if not get_cfg(k)]
     if missing:
-        raise RuntimeError(f"Missing .env variables: {missing}")
+        raise RuntimeError(f"Missing config values: {missing}")
 
     return snowflake.connector.connect(
-        account=os.getenv("SNOWFLAKE_ACCOUNT"),
-        user=os.getenv("SNOWFLAKE_USER"),
-        password=os.getenv("SNOWFLAKE_PASSWORD"),
-        role=os.getenv("SNOWFLAKE_ROLE"),
-        warehouse=os.getenv("SNOWFLAKE_WAREHOUSE"),
-        database=os.getenv("SNOWFLAKE_DATABASE"),
-        schema=os.getenv("SNOWFLAKE_SCHEMA"),
+        account=get_cfg("SNOWFLAKE_ACCOUNT"),
+        user=get_cfg("SNOWFLAKE_USER"),
+        password=get_cfg("SNOWFLAKE_PASSWORD"),
+        role=get_cfg("SNOWFLAKE_ROLE"),
+        warehouse=get_cfg("SNOWFLAKE_WAREHOUSE"),
+        database=get_cfg("SNOWFLAKE_DATABASE"),
+        schema=get_cfg("SNOWFLAKE_SCHEMA"),
     )
-
 
 @st.cache_data(ttl=600)
 def run_query(sql: str) -> pd.DataFrame:
