@@ -27,6 +27,7 @@ def get_conn():
         schema=os.getenv("SNOWFLAKE_SCHEMA"),
     )
 
+
 @st.cache_data(ttl=600)
 def run_query(sql: str) -> pd.DataFrame:
     """Runs a SQL query in Snowflake and returns a DataFrame."""
