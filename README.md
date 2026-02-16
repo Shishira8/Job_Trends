@@ -52,21 +52,38 @@ The final output enables analysis of **skill demand by company and seniority lev
 
 ---
 
+
+## Pipeline Usage (MVP)
+
+1. **Ingest jobs from API and store raw data in S3:**
+  ```bash
+  python ingestion/write_raw_to_s3.py
+  ```
+  (Fetches jobs from Adzuna and writes to S3 as JSON, partitioned by date)
+
+2. **Transform and enrich jobs:**
+  ```bash
+  python transformations/transform.py
+  ```
+  (Reads raw jobs from S3, dedupes, normalizes, classifies seniority, extracts skills)
+
+3. **Load to Snowflake:**
+  ```bash
+  python warehouse/load_snowflake.py
+  ```
+  (Loads transformed data into Snowflake stage tables and merges into final tables)
+
+**.env file must be configured with your Snowflake, AWS, and Adzuna credentials.**
+
+---
+
 ## Current Status
 
-🚧 This project is under active development.
+✅ Ingestion, transformation, and Snowflake loading are working end-to-end.
 
-Initial setup completed:
-- Snowflake warehouse, database, schema, and core tables
-- Local Python environment and project scaffolding
-- Repository structure and configuration
-
-Future updates will include:
-- Automated ingestion pipelines
-- Data transformations and loading logic
-- Analytics queries
-- Interactive dashboard
-- Scheduling and monitoring
+Planned updates:
+- Analytics SQL queries and dashboard
+- Orchestration and automation
 
 ---
 
