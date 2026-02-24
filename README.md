@@ -74,6 +74,9 @@ The final output enables analysis of **skill demand by company and seniority lev
   (Loads transformed data into Snowflake stage tables and merges into final tables)
 
 **.env file must be configured with your Snowflake, AWS, and Adzuna credentials.**
+<img width="1778" height="1386" alt="image" src="https://github.com/user-attachments/assets/4c0093da-038c-4610-8b9d-c3e9b0acfe06" />
+<img width="1778" height="1386" alt="image" src="https://github.com/user-attachments/assets/4c0093da-038c-4610-8b9d-c3e9b0acfe06" />
+
 
 ---
 
